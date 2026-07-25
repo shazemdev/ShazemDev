@@ -19,3 +19,10 @@ tsconfig.tsbuildinfo
 
 # Personal Claude Code permissions (the shared config is .claude/settings.json)
 .claude/settings.local.json
+
+# The synced Tailwind docs snapshot. tailwindlabs/tailwindcss.com is
+# source-available but NOT open-source, so the snapshot must stay local and
+# must never be redistributed through this public repo. Re-create it with:
+#   python3 .claude/skills/tailwind-4-docs/scripts/sync_tailwind_docs.py --accept-docs-license
+*/skills/tailwind-4-docs/references/docs/
+*/skills/tailwind-4-docs/references/docs-index.tsx

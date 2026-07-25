@@ -1,18 +1,17 @@
 import type { Metadata, Viewport } from 'next';
-import { Bricolage_Grotesque, JetBrains_Mono } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
 // Self-hosted at build time, so the page makes no request to Google.
-const display = Bricolage_Grotesque({
+const sans = Geist({
   subsets: ['latin'],
-  variable: '--font-display',
+  variable: '--font-geist-sans',
   display: 'swap',
 });
 
-const mono = JetBrains_Mono({
+const mono = Geist_Mono({
   subsets: ['latin'],
-  weight: '500',
-  variable: '--font-mono',
+  variable: '--font-geist-mono',
   display: 'swap',
 });
 
@@ -37,7 +36,14 @@ export const metadata: Metadata = {
   twitter: { card: 'summary' },
 };
 
-export const viewport: Viewport = { themeColor: '#F6F7F9' };
+// Matches --color-canvas-soft, the page background.
+export const viewport: Viewport = { themeColor: '#fafafa' };
+
+const navLinks = [
+  { href: '/#now', label: 'Now' },
+  { href: '/#craft', label: 'Craft' },
+  { href: '/#elsewhere', label: 'Elsewhere' },
+];
 
 export default function RootLayout({
   children,
@@ -45,28 +51,51 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <div className="wrap">
-          <header>
-            <a className="mark" href="/">
-              shazem<span>.dev</span>
+        <a
+          href="#main"
+          className="btn btn-primary sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+        >
+          Skip to content
+        </a>
+
+        <header className="sticky top-0 z-40 border-b border-hairline bg-canvas/80 backdrop-blur-md">
+          <div className="page flex h-16 items-center justify-between gap-4">
+            <a
+              href="/"
+              translate="no"
+              className="rounded-sm text-body-sm font-semibold tracking-[-0.02em] text-ink"
+            >
+              shazem<span className="text-body">.dev</span>
             </a>
-            <nav>
-              <a href="/#now">Now</a>
-              <a href="https://github.com/shazemdev">GitHub</a>
+
+            <nav aria-label="Sections" className="flex items-center gap-1">
+              {navLinks.map(({ href, label }) => (
+                <a key={href} href={href} className="btn-nav hidden sm:inline-flex">
+                  {label}
+                </a>
+              ))}
+              <a
+                href="https://github.com/shazemdev"
+                className="btn-nav ml-1 bg-primary text-on-primary hover:bg-body hover:text-on-primary"
+              >
+                GitHub
+              </a>
             </nav>
-          </header>
+          </div>
+        </header>
 
-          {children}
+        <main id="main">{children}</main>
 
-          <footer>
+        <footer className="border-t border-hairline bg-canvas">
+          <div className="page flex flex-wrap items-center justify-between gap-2 py-10 text-body-sm text-body">
             <span>© 2026 Shazem</span>
-            <span>
-              <code>shazem.dev</code> · made by hand
+            <span className="font-mono text-caption text-body" translate="no">
+              shazem.dev — made by hand
             </span>
-          </footer>
-        </div>
+          </div>
+        </footer>
       </body>
     </html>
   );

@@ -1,432 +1,404 @@
-/*! HTML5 Boilerplate v9.0.1 | MIT License | https://html5boilerplate.com/ */
-
-/* main.css 3.0.0 | MIT License | https://github.com/h5bp/main.css#readme */
-/*
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
-
-/* H5BP's `html { color; font-size; line-height }` block is intentionally
-   omitted — the design tokens below set those on `body` instead. */
-
-/*
- * Remove text-shadow in selection highlight:
- * https://twitter.com/miketaylr/status/12228805301
+/* Shazem — the whole design system.
  *
- * Customize the background color to match your design.
+ * Every token lives in the @theme block below and nowhere else. The visual
+ * language is documented in DESIGN.md; this file is its only implementation.
+ * Never hardcode a colour, radius, shadow or type size in a component.
  */
 
-::-moz-selection {
-  background: #b3d4fc;
-  text-shadow: none;
-}
+/* All markup lives in app/. Scoping source detection there keeps Tailwind from
+   scanning sibling folders — notably .claude/skills, whose docs snapshot is
+   full of class names that are not this site's. */
+@import "tailwindcss" source(none);
+@source "../app";
 
-::selection {
-  background: #b3d4fc;
-  text-shadow: none;
-}
+@theme {
+  /* ==========================================================================
+     Colour — ink + gray + one link blue + the three gradient pairs.
+     The default Tailwind palette is cleared on purpose: there is no sixth
+     accent colour in this system, and `bg-red-500` should not exist.
+     ========================================================================== */
 
-/*
- * A better looking default horizontal rule
- */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
 
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin: 1em 0;
-  padding: 0;
-}
+  /* Surface ladder: soft page → white card → deeper inset → ink flip. */
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #fafafa;
+  --color-canvas-soft-2: #f5f5f5;
+  --color-primary: #171717;
 
-/*
- * Remove the gap between audio, canvas, iframes,
- * images, videos and the bottom of their containers:
- * https://github.com/h5bp/html5-boilerplate/issues/440
- */
+  /* Text */
+  --color-ink: #171717;
+  --color-body: #4d4d4d;
+  --color-mute: #888888;
+  --color-on-primary: #ffffff;
 
-audio,
-canvas,
-iframe,
-img,
-svg,
-video {
-  vertical-align: middle;
-}
+  /* Lines */
+  --color-hairline: #ebebeb;
+  --color-hairline-strong: #a1a1a1;
 
-/*
- * Remove default fieldset styles.
- */
+  /* Link */
+  --color-link: #0070f3;
+  --color-link-deep: #0761d1;
 
-fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
+  /* The brand gradient: three pairs that collapse into one mesh.
+     Hero scale only — never miniaturised, never reduced to one stop. */
+  --color-develop-start: #007cf0;
+  --color-develop-end: #00dfd8;
+  --color-preview-start: #7928ca;
+  --color-preview-end: #ff0080;
+  --color-ship-start: #ff4d4d;
+  --color-ship-end: #f9cb28;
 
-/*
- * Allow only vertical resizing of textareas.
- */
+  /* ==========================================================================
+     Type — a geometric sans for everything narrative, a mono for the
+     technical layer. Both are self-hosted by next/font in app/layout.tsx.
+     ========================================================================== */
 
-textarea {
-  resize: vertical;
-}
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+  /* Display sizes carry their own weight so 600 stays the ceiling, and their
+     own negative tracking, which is a load-bearing part of the voice. */
+  --text-display-xl: 3rem; /* 48px */
+  --text-display-xl--line-height: 1;
+  --text-display-xl--letter-spacing: -0.05em;
+  --text-display-xl--font-weight: 600;
 
-/* ============ Tokens ============ */
-:root {
-  --cloud:  #F6F7F9;   /* page background        */
-  --ink:    #16181D;   /* primary text           */
-  --slate:  #5A6172;   /* secondary text         */
-  --indigo: #3B4FE0;   /* accent / links         */
-  --line:   #DFE2E8;   /* hairlines & borders    */
-  --card:   #FFFFFF;
+  --text-display-lg: 2rem; /* 32px */
+  --text-display-lg--line-height: 1.25;
+  --text-display-lg--letter-spacing: -0.04em;
+  --text-display-lg--font-weight: 600;
 
-  /* --font-display / --font-mono are injected by next/font in app/layout.tsx,
-     which self-hosts Bricolage Grotesque and JetBrains Mono. */
-  --display: var(--font-display), "SF Pro Display", system-ui, sans-serif;
-  /* Body intentionally uses the system stack — on Apple devices this
-     renders in San Francisco, the native iOS typeface. */
-  --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --text-display-md: 1.5rem; /* 24px */
+  --text-display-md--line-height: 1.3333;
+  --text-display-md--letter-spacing: -0.04em;
+  --text-display-md--font-weight: 600;
 
-  --squircle: 27%;     /* iOS-style icon corner  */
-}
+  --text-display-sm: 1.25rem; /* 20px */
+  --text-display-sm--line-height: 1.4;
+  --text-display-sm--letter-spacing: -0.03em;
+  --text-display-sm--font-weight: 600;
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+  --text-body-lg: 1.125rem; /* 18px — lead paragraphs */
+  --text-body-lg--line-height: 1.5556;
 
-html { scroll-behavior: smooth; }
+  --text-body-md: 1rem; /* 16px — default body */
+  --text-body-md--line-height: 1.5;
 
-body {
-  font-family: var(--body);
-  background: var(--cloud);
-  color: var(--ink);
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
+  --text-body-sm: 0.875rem; /* 14px — nav, captions, buttons */
+  --text-body-sm--line-height: 1.4286;
+  --text-body-sm--letter-spacing: -0.02em;
 
-a { color: var(--indigo); text-decoration: none; }
-a:hover { text-decoration: underline; }
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--indigo);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+  --text-caption: 0.75rem; /* 12px — badges, eyebrows, fine print */
+  --text-caption--line-height: 1.3333;
 
-.wrap {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
+  --text-code: 0.8125rem; /* 13px — code blocks, terminal mockups */
+  --text-code--line-height: 1.5385;
 
-/* ============ Header ============ */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 28px 0;
-}
+  /* ==========================================================================
+     Shape — two deliberate radius scales: 4–16px for chrome, 100px for
+     marketing CTAs. Plus the squircle, which is this site's own signature.
+     ========================================================================== */
 
-.mark {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-.mark span { color: var(--indigo); }
-.mark:hover { text-decoration: none; }
+  --radius-*: initial;
+  --radius-xs: 4px;
+  --radius-sm: 6px; /* base UI radius: nav buttons, inputs */
+  --radius-md: 8px; /* marketing radius: cards */
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 100px; /* marketing-scale CTA */
+  --radius-full: 9999px;
+  --radius-squircle: 27%; /* the iOS app-icon shape */
 
-header nav a {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--slate);
-  margin-left: 22px;
-}
-header nav a:hover { color: var(--indigo); }
+  /* ==========================================================================
+     Elevation — stacked small offsets plus an inset hairline ring.
+     Never a single heavy drop shadow.
+     ========================================================================== */
 
-/* ============ Hero ============ */
-.hero {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 48px;
-  align-items: center;
-  padding: 72px 0 88px;
-}
+  --shadow-*: initial;
+  --shadow-hairline: inset 0 0 0 1px --alpha(var(--color-black) / 8%);
+  --shadow-subtle:
+    0 1px 1px --alpha(var(--color-black) / 2%),
+    0 2px 2px --alpha(var(--color-black) / 4%),
+    inset 0 0 0 1px --alpha(var(--color-black) / 8%);
+  --shadow-soft:
+    0 2px 2px --alpha(var(--color-black) / 4%),
+    0 8px 8px -8px --alpha(var(--color-black) / 4%),
+    inset 0 0 0 1px --alpha(var(--color-black) / 8%);
+  --shadow-float:
+    0 2px 2px --alpha(var(--color-black) / 4%),
+    0 8px 16px -4px --alpha(var(--color-black) / 4%),
+    inset 0 0 0 1px --alpha(var(--color-black) / 8%);
 
-.eyebrow {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--indigo);
-  margin-bottom: 18px;
-}
+  /* ==========================================================================
+     Breakpoints — named for this design's collapsing strategy, not
+     Tailwind's defaults. sm is where the hero stops being a phone layout.
+     ========================================================================== */
 
-h1 {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(2.4rem, 5.5vw, 3.9rem);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-  margin-bottom: 22px;
-}
+  --breakpoint-*: initial;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1200px;
 
-.hero p {
-  color: var(--slate);
-  font-size: 1.08rem;
-  max-width: 42ch;
-}
+  /* Content band. Bands stretch edge-to-edge; content holds this width. */
+  --container-page: 1200px;
 
-/* ============ Signature: the shelf ============ */
-.shelf {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
+  /* ==========================================================================
+     Motion — the page-load rise is the only orchestrated animation.
+     ========================================================================== */
 
-.icon-slot {
-  width: 168px;
-  height: 168px;
-  border-radius: var(--squircle);
-  border: 2px dashed var(--line);
-  background:
-    linear-gradient(145deg, rgba(255,138,92,0.10), rgba(255,78,142,0.10)),
-    var(--card);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: transform 0.35s ease, border-color 0.35s ease;
-}
-.icon-slot:hover {
-  transform: translateY(-4px);
-  border-color: var(--indigo);
-}
-.icon-slot::after {           /* the shelf shadow beneath the icon */
-  content: "";
-  position: absolute;
-  bottom: -22px;
-  width: 70%;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(22,24,29,0.12), transparent);
-}
-.icon-slot svg { width: 44px; height: 44px; stroke: var(--slate); }
+  --animate-rise: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-.slot-label {
-  text-align: center;
-  margin-top: 10px;
-}
-.slot-label strong {
-  display: block;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 0.98rem;
-}
-.slot-label code {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  color: var(--slate);
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 99px;
-  padding: 3px 10px;
-  display: inline-block;
-  margin-top: 6px;
-}
-
-/* ============ Sections ============ */
-section {
-  border-top: 1px solid var(--line);
-  padding: 56px 0;
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 32px;
-}
-
-section h2 {
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--slate);
-  padding-top: 5px;
-}
-
-section p { color: var(--ink); max-width: 58ch; }
-section p + p { margin-top: 14px; }
-
-.links {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.links a {
-  display: inline-block;
-  font-weight: 600;
-  font-size: 0.95rem;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 18px;
-  color: var(--ink);
-  transition: border-color 0.25s ease, color 0.25s ease;
-}
-.links a:hover {
-  border-color: var(--indigo);
-  color: var(--indigo);
-  text-decoration: none;
-}
-
-/* ============ Footer ============ */
-footer {
-  border-top: 1px solid var(--line);
-  padding: 32px 0 48px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-  color: var(--slate);
-  font-size: 0.88rem;
-}
-footer code { font-family: var(--mono); font-size: 0.8rem; }
-
-/* ============ Page-load motion ============ */
-@media (prefers-reduced-motion: no-preference) {
-  .rise {
-    opacity: 0;
-    transform: translateY(14px);
-    animation: rise 0.7s ease forwards;
-  }
-  .rise:nth-child(2) { animation-delay: 0.12s; }
-  .hero .shelf { animation-delay: 0.24s; }
   @keyframes rise {
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
-/* ============ Mobile ============ */
-@media (max-width: 720px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 56px;
-    padding: 48px 0 72px;
-    text-align: left;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Native controls and scrollbars should match the light canvas. */
+    color-scheme: light;
   }
-  section { grid-template-columns: 1fr; gap: 12px; padding: 44px 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas-soft);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-md);
+    line-height: var(--text-body-md--line-height);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Focus and :active states carry the feedback; the grey flash does not. */
+    -webkit-tap-highlight-color: transparent;
+
+    /* Keep the footer on the bottom edge on short pages, e.g. the 404. */
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  /* One focus treatment for the whole site. Never removed, only inherited. */
+  :focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: #f2f2f2;
+  }
+
+  /* Anchor targets clear the 64px sticky header. */
+  :target {
+    scroll-margin-top: 6rem;
+  }
 }
 
 /* ==========================================================================
-   Helper classes
+   Custom utilities — low-level, composable, one job each.
    ========================================================================== */
 
-/*
- * Hide visually and from screen readers
- */
+/* The centred content band shared by every section. */
+@utility page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-page);
+  padding-inline: --spacing(4);
 
-.hidden,
-[hidden] {
-  display: none !important;
+  @media (width >= 600px) {
+    padding-inline: --spacing(6);
+  }
 }
 
-/*
- * Hide only visually, but have it available for screen readers:
- * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
- *
- * 1. For long content, line feeds are not interpreted as spaces and small width
- *    causes content to wrap 1 word per line:
- *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
- */
+/* The brand mesh: three gradient pairs collapsed into one atmospheric
+   backdrop. Hero scale only — do not apply this to a card or an icon. */
+@utility mesh {
+  background-image:
+    radial-gradient(
+      46% 60% at 10% 18%,
+      --alpha(var(--color-develop-start) / 20%),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 54% at 30% 8%,
+      --alpha(var(--color-develop-end) / 17%),
+      transparent 68%
+    ),
+    radial-gradient(
+      48% 62% at 68% 10%,
+      --alpha(var(--color-preview-start) / 15%),
+      transparent 70%
+    ),
+    radial-gradient(
+      42% 56% at 88% 22%,
+      --alpha(var(--color-preview-end) / 17%),
+      transparent 68%
+    ),
+    radial-gradient(
+      38% 50% at 96% 40%,
+      --alpha(var(--color-ship-start) / 14%),
+      transparent 66%
+    ),
+    radial-gradient(
+      36% 48% at 52% 38%,
+      --alpha(var(--color-ship-end) / 12%),
+      transparent 64%
+    );
 
-.visually-hidden {
-  border: 0;
-  clip: rect(0, 0, 0, 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-  /* 1 */
+  /* Atmosphere, not a band: fade it out at every edge so it never collides
+     with the header hairline or ends on a hard line. */
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 18%, #000 60%, transparent),
+    linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-composite: intersect;
 }
 
-/*
- * Extends the .visually-hidden class to allow the element
- * to be focusable when navigated to via the keyboard:
- * https://www.drupal.org/node/897638
- */
-
-.visually-hidden.focusable:active,
-.visually-hidden.focusable:focus {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  white-space: inherit;
-  width: auto;
-}
-
-/*
- * Hide visually and from screen readers, but maintain layout
- */
-
-.invisible {
-  visibility: hidden;
-}
-
-/*
- * Clearfix: contain floats
- *
- * The use of `table` rather than `block` is only necessary if using
- * `::before` to contain the top-margins of child elements.
- */
-
-.clearfix::before,
-.clearfix::after {
-  content: "";
-  display: table;
-}
-
-.clearfix::after {
-  clear: both;
+/* The soft ellipse an app icon sits on. Part of the shelf, not a shadow token. */
+@utility shelf-shadow {
+  background-image: radial-gradient(
+    closest-side,
+    --alpha(var(--color-black) / 12%),
+    transparent
+  );
 }
 
 /* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
+   Component classes — a deliberately tiny, stable API. Base classes own
+   layout and behaviour; tone lives in a separate variant class.
    ========================================================================== */
 
-@media only screen and (min-width: 35em) {
-  /* Style adjustments for viewports that meet the condition */
-}
+@layer components {
+  /* --- Marketing-scale CTA: the 100px pill --------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: --spacing(2);
+    min-height: --spacing(12); /* 48px — comfortably above the 44px floor */
+    padding-inline: --spacing(6);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-body-md);
+    font-weight: 500;
+    line-height: var(--text-body-md--line-height);
+    white-space: nowrap;
+    touch-action: manipulation;
+    transition-property: background-color, border-color, color, box-shadow,
+      transform;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+  }
 
-@media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 1.25dppx),
-  (min-resolution: 120dpi) {
-  /* Style adjustments for high resolution devices */
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn:active {
+      transform: none;
+    }
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-body);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-subtle);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-canvas-soft-2);
+  }
+
+  /* --- Nav-scale button: the 6px square ----------------------------------- */
+  .btn-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: --spacing(1.5);
+    min-height: --spacing(9); /* 36px, padded to a 44px touch target below */
+    padding-inline: --spacing(3);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-body-sm);
+    font-weight: 500;
+    letter-spacing: var(--text-body-sm--letter-spacing);
+    color: var(--color-body);
+    touch-action: manipulation;
+    transition-property: background-color, color;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+  }
+
+  .btn-nav:hover {
+    background-color: var(--color-canvas-soft-2);
+    color: var(--color-ink);
+  }
+
+  /* Inflate nav-scale buttons to the 44px touch floor on touch devices. */
+  @media (pointer: coarse) {
+    .btn-nav {
+      min-height: --spacing(11);
+    }
+  }
+
+  /* --- Small metadata pill ------------------------------------------------ */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: --spacing(2);
+    padding: --spacing(1.5) --spacing(3);
+    border-radius: var(--radius-full);
+    background-color: var(--color-canvas);
+    color: var(--color-body);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    box-shadow: var(--shadow-hairline);
+  }
+
+  /* --- Section eyebrow: the technical voice ------------------------------- */
+  /* Deliberately toneless: the band it sits on picks the colour, because a
+     light band and the ink band need different ones to clear 4.5:1. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
 }
 
 /* ==========================================================================
-   Print styles.
-   Inlined to avoid the additional HTTP request:
-   https://www.phpied.com/delay-loading-your-print-css/
+   Print — the page should still read on paper.
    ========================================================================== */
 
 @media print {
@@ -435,58 +407,26 @@ footer code { font-family: var(--mono); font-size: 0.8rem; }
   *::after {
     background: #fff !important;
     color: #000 !important;
-    /* Black prints faster */
     box-shadow: none !important;
     text-shadow: none !important;
-  }
-
-  a,
-  a:visited {
-    text-decoration: underline;
   }
 
   a[href]::after {
     content: " (" attr(href) ")";
   }
 
-  abbr[title]::after {
-    content: " (" attr(title) ")";
-  }
-
-  /*
-   * Don't show links that are fragment identifiers,
-   * or use the `javascript:` pseudo protocol
-   */
-  a[href^="#"]::after,
-  a[href^="javascript:"]::after {
+  a[href^="#"]::after {
     content: "";
   }
 
-  pre {
-    white-space: pre-wrap !important;
-  }
-
-  pre,
-  blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
-
-  tr,
-  img {
-    page-break-inside: avoid;
-  }
-
-  p,
-  h2,
-  h3 {
-    orphans: 3;
-    widows: 3;
-  }
-
+  h1,
   h2,
   h3 {
     page-break-after: avoid;
   }
-}
 
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+}
