@@ -90,11 +90,13 @@ textarea {
   --line:   #DFE2E8;   /* hairlines & borders    */
   --card:   #FFFFFF;
 
-  --display: "Bricolage Grotesque", "SF Pro Display", system-ui, sans-serif;
+  /* --font-display / --font-mono are injected by next/font in app/layout.tsx,
+     which self-hosts Bricolage Grotesque and JetBrains Mono. */
+  --display: var(--font-display), "SF Pro Display", system-ui, sans-serif;
   /* Body intentionally uses the system stack — on Apple devices this
      renders in San Francisco, the native iOS typeface. */
   --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 
   --squircle: 27%;     /* iOS-style icon corner  */
 }
