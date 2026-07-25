@@ -15,12 +15,12 @@
     "dev": "next dev",
     "build": "next build",
     "typecheck": "tsc --noEmit",
-    "preview": "npm run build && wrangler pages dev out",
-    "deploy": "npm run build && wrangler pages deploy --commit-dirty=true",
-    "deploy:preview": "npm run build && wrangler pages deploy --branch=preview --commit-dirty=true",
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:preview": "npm run build && wrangler versions upload",
     "cf:login": "wrangler login",
     "cf:whoami": "wrangler whoami",
-    "cf:deployments": "wrangler pages deployment list"
+    "cf:deployments": "wrangler deployments list"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",

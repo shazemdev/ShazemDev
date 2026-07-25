@@ -1,8 +1,17 @@
-# Cloudflare Pages config for direct uploads (`npm run deploy`).
+# Cloudflare Workers config — an assets-only Worker (`npm run deploy`).
 #
-# `name` is the Pages project name and decides the preview domain
-# (shazem-dev.pages.dev). The custom domain www.shazem.dev is attached in the
-# Cloudflare dashboard, not here.
+# There is no `main` entry point on purpose: the site is fully static, so the
+# Worker serves `out/` directly and never runs any code. Do not add one — a
+# static export has no server logic to run.
+#
+# `name` decides the workers.dev subdomain (shazem-dev.<subdomain>.workers.dev).
+# A custom domain is attached in the Cloudflare dashboard, not here.
 name = "shazem-dev"
-pages_build_output_dir = "out"
 compatibility_date = "2026-07-25"
+
+[assets]
+directory = "./out"
+
+# Serve out/404.html with a real 404 status for unmatched paths — that file is
+# what Next.js writes app/not-found.tsx to.
+not_found_handling = "404-page"

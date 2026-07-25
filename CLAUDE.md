@@ -4,9 +4,13 @@ Guidance for Claude Code when working in this repository.
 
 ## What this project is
 
-Personal profile site for **Shazem**, an indie iPhone app developer. Live at
-https://www.shazem.dev. Currently a single page; it will grow one app page at
-a time as apps ship.
+Personal profile site for **Shazem**, an indie iPhone app developer. Currently
+a single page; it will grow one app page at a time as apps ship.
+
+Live at **https://shazem-dev.shazem-dev.workers.dev**. The intended home is
+`shazem.dev`, but that domain is *not* attached yet — it still 302-redirects to
+`dns.google` from a leftover rule that has to be cleared first. Don't describe
+the site as living at shazem.dev until that is actually true.
 
 - **Next.js 16 (App Router) + React 19 + TypeScript.** Hand-written JSX styled
   with **Tailwind CSS v4** — no UI library, no CSS-in-JS, no component
@@ -15,9 +19,10 @@ a time as apps ship.
   `npm run build` emits a plain HTML/CSS site to `out/`. There is no Node server
   in production — do not use route handlers, middleware, ISR, server actions,
   or `next/image` optimization. They will not work.
-- Deployed to **Cloudflare Pages** by direct upload: `npm run deploy` builds and
-  pushes `out/` with Wrangler. Pushing to GitHub does *not* deploy — the two are
-  independent. See `DEVELOPMENT.md` §3.
+- Deployed to **Cloudflare Workers** as an assets-only Worker: `wrangler.toml`
+  has no `main`, so Cloudflare serves `out/` as static files and runs no code.
+  `npm run deploy` builds and uploads with Wrangler. Pushing to GitHub does
+  *not* deploy — the two are independent. See `DEVELOPMENT.md` §3.
 - Edited in WebStorm; `.idea/` is gitignored and must never be committed.
 
 ## Project structure
@@ -195,7 +200,7 @@ from memory.
 ```bash
 npm run build      # static export to out/
 npm run typecheck  # tsc --noEmit
-npm run preview    # build, then serve out/ on the Cloudflare Pages runtime
+npm run preview    # build, then serve out/ on the Cloudflare Workers runtime
 ```
 
 After a build, sanity-check the CSS size: `ls -la out/_next/static/chunks/*.css`
@@ -205,12 +210,14 @@ should be ~25 KB. If it is hundreds of KB, source scoping has regressed.
 
 ```bash
 npm run deploy          # build + upload out/ to production
-npm run deploy:preview  # same, to a preview URL nobody links to
+npm run deploy:preview  # upload a preview version nobody links to
 ```
 
 `npm run deploy` always runs the build first, so `out/` can never be stale.
 Never deploy without looking at the result — `npm run deploy:preview` first is
-the cheap way to check.
+the cheap way to check. It runs `wrangler versions upload`, which only works
+once the Worker exists; the very first deploy of a new Worker must be
+`npm run deploy`.
 
 **Ship a new app to the shelf:**
 1. Create `app/apps/<appname>/page.tsx` (screenshots, short story, App Store
