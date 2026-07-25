@@ -1,0 +1,12 @@
+{
+  "short_name": "Shazem",
+  "name": "Shazem — Indie iPhone App Developer",
+  "icons": [{
+    "src": "icon.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  }],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#F6F7F9",
+  "theme_color": "#F6F7F9"
+}
