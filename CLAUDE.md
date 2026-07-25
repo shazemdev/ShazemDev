@@ -13,8 +13,9 @@ a time as apps ship.
   libraries. The site itself ships zero JavaScript today.
 - `npm run build` compiles the site into `dist/`. That folder is what gets
   deployed; it is gitignored and never committed.
-- Deployed via **Cloudflare Pages**, connected to this GitHub repo
-  (https://github.com/shazemdev). Every push to `main` auto-deploys.
+- Deployed to **Cloudflare Pages** by direct upload: `npm run deploy` builds and
+  pushes `dist/` with Wrangler. Pushing to GitHub does *not* deploy — the two
+  are independent. See `DEVELOPMENT.md` §3.
 - Edited in WebStorm; `.idea/` is gitignored and must never be committed.
 
 ## Project structure
@@ -30,6 +31,7 @@ favicon.ico icon.png icon.svg site.webmanifest robots.txt
 webpack.common.js       # entry, output, HtmlWebpackPlugin (shared)
 webpack.config.dev.js   # dev server
 webpack.config.prod.js  # production build + CopyPlugin for static assets
+wrangler.toml           # Cloudflare Pages project name + output dir
 package.json
 README.md               # GitHub profile README — see the warning below
 DEVELOPMENT.md          # setup + deployment guide (keep in sync with reality)
@@ -98,6 +100,18 @@ still mostly works, but it is not what gets deployed — prefer `npm start`.
 npm run build  # writes dist/
 ```
 
+**Deploy:**
+
+```bash
+npm run deploy          # build + upload dist/ to production
+npm run deploy:preview  # same, to a preview URL nobody links to
+npm run preview         # serve dist/ locally on the Pages runtime
+```
+
+`npm run deploy` always runs the build first, so `dist/` can never be stale.
+Never deploy without looking at the result — `npm run deploy:preview` first is
+the cheap way to check.
+
 **Ship a new app to the shelf:**
 1. Create `apps/<appname>.html` (screenshots, short story, App Store badge).
    Link `css/style.css` and reuse the same header/footer — do not copy tokens
@@ -109,9 +123,8 @@ npm run build  # writes dist/
    radius), link it to the new page, update the label.
 4. Add a fresh dashed slot for the next app ("App 02 · in development").
 
-**Deploy:** commit and push to `main`; Cloudflare Pages runs `npm run build`
-and publishes `dist/`. Never commit secrets — there are none in this project
-and it should stay that way.
+Never commit secrets — there are none in this project and it should stay that
+way. Cloudflare credentials live in Wrangler's own store, never in the repo.
 
 ## Git
 

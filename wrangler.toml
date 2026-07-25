@@ -1,0 +1,8 @@
+# Cloudflare Pages config for direct uploads (`npm run deploy`).
+#
+# `name` is the Pages project name and decides the preview domain
+# (shazem-dev.pages.dev). The custom domain www.shazem.dev is attached in the
+# Cloudflare dashboard, not here.
+name = "shazem-dev"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-07-25"

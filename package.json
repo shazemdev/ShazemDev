@@ -14,7 +14,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --config webpack.config.dev.js",
-    "build": "webpack --config webpack.config.prod.js"
+    "build": "webpack --config webpack.config.prod.js",
+    "preview": "npm run build && wrangler pages dev dist",
+    "deploy": "npm run build && wrangler pages deploy --commit-dirty=true",
+    "deploy:preview": "npm run build && wrangler pages deploy --branch=preview --commit-dirty=true",
+    "cf:login": "wrangler login",
+    "cf:whoami": "wrangler whoami",
+    "cf:deployments": "wrangler pages deployment list"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
@@ -22,6 +28,7 @@
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4",
-    "webpack-merge": "^5.10.0"
+    "webpack-merge": "^5.10.0",
+    "wrangler": "^4.114.0"
   }
 }

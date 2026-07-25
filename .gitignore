@@ -5,6 +5,9 @@ node_modules
 dist
 .cache
 
+# Wrangler's local state / cache
+.wrangler/
+
 # WebStorm settings and macOS cruft — must never be committed
 .idea/
 .DS_Store

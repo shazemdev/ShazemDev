@@ -62,32 +62,83 @@ commit and push from the Commit tool window (⌘K to commit, ⌘⇧K to push).
 Prerequisite: your domain `shazem.dev` should already be added to your Cloudflare
 account (its nameservers pointing at Cloudflare).
 
-1. Go to https://dash.cloudflare.com → **Workers & Pages** → **Create** →
-   **Pages** → **Connect to Git**.
-2. Authorize Cloudflare to access your GitHub account and select the
-   `shazemdev/ShazemDev` repo.
-3. Build settings — **this project has a build step, so these must be set:**
+### Pick one deployment mode — you cannot have both
 
-   | Setting | Value |
-   | --- | --- |
-   | Framework preset | None |
-   | Build command | `npm run build` |
-   | Build output directory | `dist` |
+A Cloudflare Pages project is created as **either** Direct Upload **or**
+Git-connected, and the choice is fixed for the life of the project. A
+Git-connected project rejects `wrangler pages deploy`; a Direct Upload project
+has no GitHub hook and never builds on push. To switch later you delete the
+project and recreate it, then re-attach the custom domains.
 
-   If the build command is left empty and the output directory is `/`,
-   Cloudflare will publish the repo root instead of the build, and the site
-   will render **unstyled** — `index.html` links `css/style.css` rather than
-   carrying its own `<style>` block.
-4. Click **Save and Deploy**. You'll get a temporary `*.pages.dev` URL — check
-   the site looks right there.
-5. In the project, open **Custom domains** → **Set up a custom domain** → enter
-   `www.shazem.dev`. Cloudflare creates the DNS record for you. Add
-   `shazem.dev` (the bare domain) as a second custom domain too, so both work.
-6. HTTPS is automatic — Cloudflare issues the certificate. Always share the site
-   as `https://www.shazem.dev` (the `http://` version will simply redirect).
+| | Direct Upload (`npm run deploy`) | Git integration |
+| --- | --- | --- |
+| Who builds | your machine | Cloudflare's build container |
+| Ships when | you run the command | every push to `main` |
+| Needs GitHub | no | yes |
+| Deploy from a laptop with uncommitted work | yes | no |
 
-From now on, every `git push` to `main` rebuilds and redeploys the site
-automatically within a minute or so.
+Direct Upload is set up below because it is what the npm scripts in this repo
+drive. If you would rather have pushes deploy themselves, skip to
+[Git integration instead](#git-integration-instead).
+
+### 3a. One-time setup (Direct Upload)
+
+```bash
+npm run cf:login                  # opens a browser, authorizes Wrangler
+npm run cf:whoami                 # confirms which account you're on
+
+# create the Pages project once — the name must match wrangler.toml
+npx wrangler pages project create shazem-dev --production-branch=main
+```
+
+### 3b. Deploy
+
+```bash
+npm run deploy                    # builds, then uploads dist/ to production
+```
+
+That is the whole loop. `deploy` runs `npm run build` first, so you can never
+ship a stale `dist/`. Wrangler prints a `https://<hash>.shazem-dev.pages.dev`
+URL for the individual deployment, plus the production URL.
+
+```bash
+npm run deploy:preview            # uploads to a "preview" branch URL instead
+npm run cf:deployments            # list recent deployments
+npm run preview                   # serve dist/ locally on the Pages runtime
+```
+
+Use `deploy:preview` to look at a change on a real Cloudflare URL without
+touching what visitors see.
+
+### 3c. Attach the custom domain (once)
+
+1. https://dash.cloudflare.com → **Workers & Pages** → **shazem-dev** →
+   **Custom domains** → **Set up a custom domain**.
+2. Enter `www.shazem.dev`. Cloudflare creates the DNS record for you.
+3. Add `shazem.dev` (the bare domain) as a second custom domain so both work.
+4. HTTPS is automatic — Cloudflare issues the certificate. Share the site as
+   `https://www.shazem.dev`; the `http://` version redirects.
+
+### Git integration instead
+
+If you prefer pushes to deploy themselves, **do not** run the
+`pages project create` command above. Instead: dashboard → **Workers & Pages** →
+**Create** → **Pages** → **Connect to Git**, authorize GitHub, pick
+`shazemdev/ShazemDev`, and set:
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | None |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+
+**Those two build settings are not optional.** Left at the defaults (empty build
+command, output `/`), Cloudflare publishes the repo root instead of the build.
+`index.html` links `css/style.css` rather than carrying its own `<style>` block,
+so the site would render **completely unstyled**.
+
+With this mode the `deploy` scripts in `package.json` will not work — Cloudflare
+rebuilds on every push to `main` instead.
 
 ## 4. Growing the site later
 
