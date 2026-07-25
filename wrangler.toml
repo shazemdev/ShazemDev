@@ -4,16 +4,24 @@
 # Worker serves `out/` directly and never runs any code. Do not add one — a
 # static export has no server logic to run.
 #
-# `name` decides the workers.dev subdomain (shazem-dev.<subdomain>.workers.dev).
-# A custom domain is attached in the Cloudflare dashboard, not here.
 name = "shazem-dev"
 compatibility_date = "2026-07-25"
 
-# Keep the workers.dev URL alive. Declaring `routes` silently disables it
-# unless this is set explicitly, which takes the site offline.
-# Keep the workers.dev URL alive. Declaring `routes` silently disables it
-# unless this is set explicitly — that takes the site offline.
-workers_dev = true
+# The workers.dev URL is off on purpose: the custom domains below are the only
+# public addresses, so search engines never see the same site on a second
+# hostname. This must stay declared — every `wrangler deploy` reconciles it, so
+# leaving it out or setting it true would resurrect the URL.
+#
+# The one risk it reintroduces: if a custom domain ever fails to attach, the
+# Worker is left with no route at all and 404s everywhere. That happened once
+# during setup. If a deploy ever reports "No targets deployed", set this to true
+# temporarily to get the site back up, then fix the route.
+workers_dev = false
+
+# Preview URLs stay on, which `deploy:preview` needs. They would otherwise
+# default to off along with workers.dev. Each is a per-version hostname that is
+# never linked publicly.
+preview_urls = true
 
 # Custom domains. Wrangler reconciles this list on every deploy and creates the
 # DNS records itself, so BOTH hostnames must stay declared here — dropping one
