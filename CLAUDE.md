@@ -7,10 +7,10 @@ Guidance for Claude Code when working in this repository.
 Personal profile site for **Shazem**, an indie iPhone app developer. Currently
 a single page; it will grow one app page at a time as apps ship.
 
-Live at **https://shazem-dev.shazem-dev.workers.dev**. The intended home is
-`shazem.dev`, but that domain is *not* attached yet — it still 302-redirects to
-`dns.google` from a leftover rule that has to be cleared first. Don't describe
-the site as living at shazem.dev until that is actually true.
+Live at **https://www.shazem.dev** (canonical), also served at
+`https://shazem.dev` and `https://shazem-dev.shazem-dev.workers.dev`. All three
+are the same Worker; both custom domains are declared in `wrangler.toml` and
+must stay declared, since Wrangler reconciles that list on every deploy.
 
 - **Next.js 16 (App Router) + React 19 + TypeScript.** Hand-written JSX styled
   with **Tailwind CSS v4** — no UI library, no CSS-in-JS, no component

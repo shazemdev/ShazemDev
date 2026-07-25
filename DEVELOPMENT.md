@@ -143,45 +143,44 @@ touching what visitors see.
 A brand-new `workers.dev` hostname takes about a minute before TLS is ready. If
 curl fails with exit 35 right after the first deploy, wait and retry.
 
-### 3c. Attach the custom domain (blocked — needs you)
+### 3c. Custom domains (done)
 
-Declaring the domains in `wrangler.toml` is the intended route, and the config
-is already written there, commented out. Uncommenting it and deploying today
-fails with:
+Both hostnames are attached and serving:
 
+| Hostname | Role |
+| --- | --- |
+| `https://www.shazem.dev` | canonical — `metadataBase` in `app/layout.tsx` points here |
+| `https://shazem.dev` | serves the same site |
+| `https://shazem-dev.shazem-dev.workers.dev` | the workers.dev fallback |
+
+They are declared in `wrangler.toml` under `routes` with `custom_domain = true`,
+so Wrangler creates and reconciles the DNS records on every deploy. Two rules
+follow from that:
+
+- **Keep both hostnames in the list.** Wrangler reconciles `routes` to match the
+  file, so deleting one detaches it on the next deploy.
+- **Never declare `routes` without `workers_dev = true`.** Adding routes
+  silently disables the workers.dev URL, and if a custom domain then fails to
+  attach the Worker is left with no route at all and 404s everywhere. That
+  happened once during setup; `workers_dev = true` is pinned to prevent it.
+
+Getting here required clearing two things off the zone first, because
+Cloudflare refuses to create a custom domain over existing records
+(API error 100117): the proxied apex A records, and a redirect rule pointing at
+`dns.google`. Redirect rules run *before* Workers in Cloudflare's pipeline, so
+that rule would have shadowed the site even with DNS correct.
+
+**Optional hardening:** both hostnames currently return 200. The canonical tag
+tells search engines which one counts, but a 301 from the apex to `www` would be
+cleaner. An assets-only Worker cannot redirect (no `main`, by design), so that
+would be a zone-level Single Redirect rule: Rules → Redirect Rules.
+
+**If a new hostname will not resolve locally but `dig` says it exists**, macOS
+has negatively cached the old NXDOMAIN. Flush it:
+
+```bash
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 ```
-code 100117: Hostname 'shazem.dev' already has externally managed DNS records (A)
-```
-
-Cloudflare will not clobber pre-existing DNS records to create a custom domain.
-Two things have to be cleared first, in the dashboard — Wrangler's OAuth token
-has `workers:write` but no `dns_records:edit`, so it cannot do either.
-
-**1. Delete the apex A records.** DNS → `shazem.dev`, remove both proxied A
-records on `@` (currently `104.21.71.11` and `172.67.168.249`).
-
-**2. Delete the redirect to `dns.google`.** Rules → Redirect Rules (check Page
-Rules too). This matters independently of DNS: redirect rules execute *before*
-Workers in Cloudflare's request pipeline, so leaving it in place would keep
-302-ing visitors away even after the custom domain resolves correctly.
-
-**3. Then enable the routes.** Uncomment the `routes` block in `wrangler.toml`
-and run `npm run deploy`. Wrangler creates the DNS records for both hostnames
-and keeps them in sync from then on.
-
-Alternatively, do it entirely in the dashboard — Workers & Pages → `shazem-dev`
-→ Settings → Domains & Routes → Add → Custom domain. That flow detects the
-conflicting record and offers to replace it, collapsing steps 1 and 3. You would
-still need to delete the redirect rule yourself.
-
-> **Never declare `routes` without `workers_dev = true`.** Adding routes
-> silently disables the workers.dev URL, and if the custom domain then fails to
-> attach the Worker ends up with no route at all — the site 404s everywhere.
-> This happened once already; `workers_dev = true` is in `wrangler.toml` to
-> prevent a repeat.
-
-Until this is done the site lives only at
-`https://shazem-dev.shazem-dev.workers.dev`.
 
 ## 4. Growing the site later
 
