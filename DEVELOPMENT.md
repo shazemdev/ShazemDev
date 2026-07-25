@@ -143,19 +143,45 @@ touching what visitors see.
 A brand-new `workers.dev` hostname takes about a minute before TLS is ready. If
 curl fails with exit 35 right after the first deploy, wait and retry.
 
-### 3c. Attach the custom domain (not done yet)
+### 3c. Attach the custom domain (blocked — needs you)
 
-`shazem.dev` currently 302-redirects to `dns.google` from a leftover rule, and
-`www.shazem.dev` does not resolve at all. **Clear that redirect first**, or it
-will shadow the site.
+Declaring the domains in `wrangler.toml` is the intended route, and the config
+is already written there, commented out. Uncommenting it and deploying today
+fails with:
 
-1. https://dash.cloudflare.com → **Workers & Pages** → **shazem-dev** →
-   **Settings** → **Domains & Routes** → **Add** → **Custom domain**.
-2. Enter `www.shazem.dev`. Cloudflare creates the DNS record for you.
-3. Add `shazem.dev` (the bare domain) as a second custom domain so both work.
-4. HTTPS is automatic — Cloudflare issues the certificate.
+```
+code 100117: Hostname 'shazem.dev' already has externally managed DNS records (A)
+```
 
-Until this is done, the site lives only at the `workers.dev` URL above.
+Cloudflare will not clobber pre-existing DNS records to create a custom domain.
+Two things have to be cleared first, in the dashboard — Wrangler's OAuth token
+has `workers:write` but no `dns_records:edit`, so it cannot do either.
+
+**1. Delete the apex A records.** DNS → `shazem.dev`, remove both proxied A
+records on `@` (currently `104.21.71.11` and `172.67.168.249`).
+
+**2. Delete the redirect to `dns.google`.** Rules → Redirect Rules (check Page
+Rules too). This matters independently of DNS: redirect rules execute *before*
+Workers in Cloudflare's request pipeline, so leaving it in place would keep
+302-ing visitors away even after the custom domain resolves correctly.
+
+**3. Then enable the routes.** Uncomment the `routes` block in `wrangler.toml`
+and run `npm run deploy`. Wrangler creates the DNS records for both hostnames
+and keeps them in sync from then on.
+
+Alternatively, do it entirely in the dashboard — Workers & Pages → `shazem-dev`
+→ Settings → Domains & Routes → Add → Custom domain. That flow detects the
+conflicting record and offers to replace it, collapsing steps 1 and 3. You would
+still need to delete the redirect rule yourself.
+
+> **Never declare `routes` without `workers_dev = true`.** Adding routes
+> silently disables the workers.dev URL, and if the custom domain then fails to
+> attach the Worker ends up with no route at all — the site 404s everywhere.
+> This happened once already; `workers_dev = true` is in `wrangler.toml` to
+> prevent a repeat.
+
+Until this is done the site lives only at
+`https://shazem-dev.shazem-dev.workers.dev`.
 
 ## 4. Growing the site later
 

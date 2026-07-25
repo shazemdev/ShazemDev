@@ -9,6 +9,28 @@
 name = "shazem-dev"
 compatibility_date = "2026-07-25"
 
+# Keep the workers.dev URL alive. Declaring `routes` silently disables it
+# unless this is set explicitly, which takes the site offline.
+# Keep the workers.dev URL alive. Declaring `routes` silently disables it
+# unless this is set explicitly — that takes the site offline.
+workers_dev = true
+
+# Custom domains, ready to enable. Uncomment and run `npm run deploy` once the
+# zone is clear; Wrangler then creates and maintains the DNS records itself.
+#
+# This currently fails with Cloudflare API error 100117, "Hostname 'shazem.dev'
+# already has externally managed DNS records (A)". Two things must go first:
+#   1. The two proxied A records on the apex (104.21.71.11, 172.67.168.249).
+#   2. The redirect rule sending shazem.dev to dns.google — redirect rules run
+#      BEFORE Workers in Cloudflare's pipeline, so it would shadow the site
+#      even after DNS is fixed.
+# See DEVELOPMENT.md §3c.
+#
+# routes = [
+#   { pattern = "shazem.dev", custom_domain = true },
+#   { pattern = "www.shazem.dev", custom_domain = true },
+# ]
+
 [assets]
 directory = "./out"
 
