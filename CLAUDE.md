@@ -31,10 +31,18 @@ webpack.common.js       # entry, output, HtmlWebpackPlugin (shared)
 webpack.config.dev.js   # dev server
 webpack.config.prod.js  # production build + CopyPlugin for static assets
 package.json
-README.md               # setup + deployment guide (keep in sync with reality)
+README.md               # GitHub profile README — see the warning below
+DEVELOPMENT.md          # setup + deployment guide (keep in sync with reality)
 CLAUDE.md               # this file
 apps/                   # (future) one HTML page per shipped app
 ```
+
+**`README.md` is not the project's setup guide.** This repo is
+`shazemdev/ShazemDev`, and because that name matches the GitHub username
+(GitHub matches case-insensitively), its `README.md` renders publicly as the
+profile page at https://github.com/shazemdev. Keep it as a short personal
+intro in the site's voice. Build, deploy and contribution notes belong in
+`DEVELOPMENT.md`.
 
 All CSS lives in `css/style.css` and every page shares it. Do not reintroduce
 embedded `<style>` blocks — the design tokens must have exactly one home.
