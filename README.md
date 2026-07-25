@@ -31,25 +31,26 @@ npm run build   # writes dist/
 - `js/app.js` — webpack's entry point. Empty; the site currently uses no
   JavaScript.
 
-## 2. Push to GitHub
+## 2. GitHub
 
-The repository is already initialized locally with an initial commit on `main`.
-To connect it to GitHub, first create an **empty** repository at
-https://github.com/new while logged in as **shazemdev** — name it
-`shazem-dev-site` (or `ShazemDev`) and do **not** add a README or .gitignore,
-you already have them.
-
-Then:
+The repository lives at https://github.com/shazemdev/ShazemDev and `main` is
+already connected to it:
 
 ```bash
-cd ~/Shazem/ShazemDev
-git remote add origin https://github.com/shazemdev/shazem-dev-site.git
-git push -u origin main
+git remote -v          # origin -> https://github.com/shazemdev/ShazemDev.git
+git push               # main is tracking origin/main
+```
+
+Commits are authored as **shazemdev**, configured locally in this repo so it
+doesn't matter which GitHub account is globally active:
+
+```bash
+git config user.name    # shazemdev
+git config user.email   # shazem.dev@gmail.com
 ```
 
 Open the folder in WebStorm (**File → Open → ~/Shazem/ShazemDev**) and you can
-commit and push from the Commit tool window (⌘K to commit, ⌘⇧K to push) from
-then on.
+commit and push from the Commit tool window (⌘K to commit, ⌘⇧K to push).
 
 ## 3. Deploy to shazem.dev with Cloudflare Pages
 
@@ -59,7 +60,7 @@ account (its nameservers pointing at Cloudflare).
 1. Go to https://dash.cloudflare.com → **Workers & Pages** → **Create** →
    **Pages** → **Connect to Git**.
 2. Authorize Cloudflare to access your GitHub account and select the
-   `shazem-dev-site` repo.
+   `shazemdev/ShazemDev` repo.
 3. Build settings — **this project has a build step, so these must be set:**
 
    | Setting | Value |
