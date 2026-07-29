@@ -74,13 +74,17 @@ production. These Next.js features will not work and must not be used:
 
 ## 2. GitHub
 
-The repository lives at https://github.com/shazemdev/ShazemDev and `main` is
-already connected to it:
+The repository lives at https://github.com/shazemdev/ShazemDev and is already
+connected:
 
 ```bash
 git remote -v          # origin -> https://github.com/shazemdev/ShazemDev.git
-git push               # main is tracking origin/main
+git push               # develop is tracking origin/develop
 ```
+
+`develop` is the default branch and where day-to-day work happens; `main` is
+the stable branch, and `develop` is merged into it when the site is in a state
+worth deploying.
 
 Commits are authored as **shazemdev**, configured locally in this repo so it
 doesn't matter which GitHub account is globally active:

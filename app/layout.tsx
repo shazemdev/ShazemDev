@@ -39,12 +39,8 @@ export const metadata: Metadata = {
 // Matches --color-canvas-soft, the page background.
 export const viewport: Viewport = { themeColor: '#fafafa' };
 
-const navLinks = [
-  { href: '/#now', label: 'Now' },
-  { href: '/#craft', label: 'Craft' },
-  { href: '/#elsewhere', label: 'Elsewhere' },
-];
-
+// The shared header and footer live in app/(site)/layout.tsx, not here, so
+// that /apps/volt can carry Volt's own sub-branded chrome instead.
 export default function RootLayout({
   children,
 }: {
@@ -59,43 +55,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-
-        <header className="sticky top-0 z-40 border-b border-hairline bg-canvas/80 backdrop-blur-md">
-          <div className="page flex h-16 items-center justify-between gap-4">
-            <a
-              href="/"
-              translate="no"
-              className="rounded-sm text-body-sm font-semibold tracking-[-0.02em] text-ink"
-            >
-              shazem<span className="text-body">.dev</span>
-            </a>
-
-            <nav aria-label="Sections" className="flex items-center gap-1">
-              {navLinks.map(({ href, label }) => (
-                <a key={href} href={href} className="btn-nav hidden sm:inline-flex">
-                  {label}
-                </a>
-              ))}
-              <a
-                href="https://github.com/shazemdev"
-                className="btn-nav ml-1 bg-primary text-on-primary hover:bg-body hover:text-on-primary"
-              >
-                GitHub
-              </a>
-            </nav>
-          </div>
-        </header>
-
-        <main id="main">{children}</main>
-
-        <footer className="border-t border-hairline bg-canvas">
-          <div className="page flex flex-wrap items-center justify-between gap-2 py-10 text-body-sm text-body">
-            <span>© 2026 Shazem</span>
-            <span className="font-mono text-caption text-body" translate="no">
-              shazem.dev — made by hand
-            </span>
-          </div>
-        </footer>
+        {children}
       </body>
     </html>
   );

@@ -235,6 +235,9 @@ way. Cloudflare credentials live in Wrangler's own store, never in the repo.
 
 ## Git
 
-- Branch: work directly on `main` for small tweaks; use short-lived branches
-  for larger changes.
+- Branches: `develop` is the default branch and where day-to-day work happens
+  — commit small tweaks to it directly, and use short-lived branches off
+  `develop` (PRed back into it) for larger changes. `main` is the stable
+  branch: merge `develop` into `main` when the site is in a state worth
+  deploying, and run `npm run deploy` from `main`.
 - Commit messages: imperative, specific ("Add app page for X", not "updates").
