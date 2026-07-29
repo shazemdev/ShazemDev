@@ -398,6 +398,75 @@
 }
 
 /* ==========================================================================
+   Volt sub-brand — /apps/volt only. These are Volt's real in-app tokens
+   (VoltColors.swift, documented in the iOS repo's docs/marketing/
+   DESIGN_HANDOFF.md), reused so the product page matches the app and its
+   published legal pages. They are deliberately *not* @theme tokens: the
+   site's own palette stays five colours, and Volt's stays scoped to the
+   .volt wrapper. Pages reach them with var utilities like bg-(--volt-card).
+   ========================================================================== */
+
+@layer components {
+  .volt {
+    --volt-bg: #0b0b0e;
+    --volt-bg-elevated: #111116;
+    --volt-card: #16161b;
+    --volt-border: rgba(255, 255, 255, 0.1);
+    --volt-border-faint: rgba(255, 255, 255, 0.07);
+    --volt-text: #f4f4f6;
+    --volt-text-secondary: rgba(244, 244, 246, 0.64);
+    --volt-text-tertiary: rgba(244, 244, 246, 0.4);
+    --volt-accent: #d8f548;
+    --volt-accent-text: #d8f548;
+    --volt-on-accent: #101010;
+
+    background-color: var(--volt-bg);
+    color: var(--volt-text);
+    color-scheme: dark;
+    font-family: var(--font-volt-body), ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.7;
+  }
+
+  /* Volt is dark-first (the app is dark-only). Light is a considered
+     fallback on warm paper, not an inversion — and --volt-accent-text
+     splits from --volt-accent here so accent-coloured text stays readable
+     on the light ground. Do not collapse them. */
+  @media (prefers-color-scheme: light) {
+    .volt {
+      --volt-bg: #faf9f4;
+      --volt-bg-elevated: #f3f2ea;
+      --volt-card: #efeee4;
+      --volt-border: rgba(16, 16, 10, 0.12);
+      --volt-border-faint: rgba(16, 16, 10, 0.07);
+      --volt-text: #15150f;
+      --volt-text-secondary: rgba(21, 21, 15, 0.66);
+      --volt-text-tertiary: rgba(21, 21, 15, 0.42);
+      --volt-accent: #78901a;
+      --volt-accent-text: #66790f;
+      color-scheme: light;
+    }
+  }
+
+  /* The one focus treatment stays; only its colour follows the sub-brand. */
+  .volt :focus-visible {
+    outline-color: var(--volt-accent-text);
+  }
+
+  .volt ::selection {
+    background-color: var(--volt-accent);
+    color: var(--volt-on-accent);
+  }
+}
+
+/* Volt's display face: Archivo Black — the wordmark, the h1 and big
+   standalone numbers only. Everything else on the page is Space Grotesk. */
+@utility volt-display {
+  font-family: var(--font-volt-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
    Print — the page should still read on paper.
    ========================================================================== */
 

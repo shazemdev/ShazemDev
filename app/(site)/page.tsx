@@ -35,9 +35,9 @@ export default function Home() {
           </h1>
 
           <p className="mt-5 max-w-[52ch] text-body-lg text-pretty text-body motion-safe:animate-rise motion-safe:[animation-delay:160ms]">
-            Designing, coding and shipping for iOS. The first one is taking
-            shape right now — and when it ships, it will live here on this
-            shelf.
+            Designing, coding and shipping for iOS. The first one — Volt, an
+            on-device video captioning app — is taking shape right now and
+            already has its place on this shelf.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3 motion-safe:animate-rise motion-safe:[animation-delay:240ms]">
@@ -53,19 +53,19 @@ export default function Home() {
               becomes a real app icon linking to its page. */}
           <div className="mt-20 flex flex-col items-center motion-safe:animate-rise motion-safe:[animation-delay:320ms]">
             <div className="relative">
-              <div className="flex size-40 items-center justify-center rounded-squircle border-2 border-dashed border-hairline-strong bg-canvas-soft sm:size-42">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  aria-hidden="true"
-                  className="size-10 text-hairline-strong"
-                >
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </div>
+              <a
+                href="/apps/volt"
+                aria-label="Volt — on-device auto-captions for iPhone, in development"
+                className="block rounded-squircle transition-transform duration-150 motion-safe:hover:-translate-y-1"
+              >
+                <img
+                  src="/volt/icon.png"
+                  alt=""
+                  width={512}
+                  height={512}
+                  className="size-40 rounded-squircle shadow-soft sm:size-42"
+                />
+              </a>
               {/* The shelf shadow the icon sits on. */}
               <div
                 aria-hidden="true"
@@ -73,7 +73,7 @@ export default function Home() {
               />
             </div>
 
-            <p className="mt-9 text-body-sm font-medium text-ink">App 01</p>
+            <p className="mt-9 text-body-sm font-medium text-ink">Volt</p>
             <p className="badge mt-2">
               <span className="font-mono">in development</span>
             </p>
