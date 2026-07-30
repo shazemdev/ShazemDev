@@ -320,6 +320,16 @@ export default function VoltPage() {
             </div>
           ))}
         </dl>
+        <p className="mt-8 text-body-sm text-(--volt-text-secondary)">
+          Troubleshooting, subscriptions and how to reach a human:{' '}
+          <a
+            href="/apps/volt/support"
+            className="rounded-sm text-(--volt-accent-text) hover:underline"
+          >
+            Volt support
+          </a>
+          .
+        </p>
       </section>
     </>
   );

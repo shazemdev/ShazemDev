@@ -8,6 +8,11 @@
 export const notifyHref =
   'mailto:shazem.dev@gmail.com?subject=Notify%20me%20when%20Volt%20launches';
 
+// The Support page's contact address. This is the app's App Store Connect
+// support channel, so keep the subject line generic enough to cover bugs,
+// billing and feature requests alike.
+export const supportHref = 'mailto:shazem.dev@gmail.com?subject=Volt%20support';
+
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-(--volt-text-secondary)">
