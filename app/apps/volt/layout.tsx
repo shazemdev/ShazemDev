@@ -69,6 +69,12 @@ export default function VoltLayout({
           <span>© 2026 Shazem</span>
           <span className="flex flex-wrap gap-x-5 gap-y-2">
             <a
+              href="/apps/volt/support"
+              className="rounded-sm transition-colors duration-150 hover:text-(--volt-text)"
+            >
+              Support
+            </a>
+            <a
               href="/apps/volt/privacy"
               className="rounded-sm transition-colors duration-150 hover:text-(--volt-text)"
             >
